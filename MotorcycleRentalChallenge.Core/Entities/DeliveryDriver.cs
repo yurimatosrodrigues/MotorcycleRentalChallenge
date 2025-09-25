@@ -1,29 +1,125 @@
 ﻿using MotorcycleRentalChallenge.Core.Enums;
+using MotorcycleRentalChallenge.Core.Exceptions;
 
 namespace MotorcycleRentalChallenge.Core.Entities
 {
     public class DeliveryDriver : BaseEntity
     {
-        public DeliveryDriver(string name, string cnpj, DateTime birthDate, 
+        public DeliveryDriver(string name, string cnpj, DateTime birthdate, 
             string cnhNumber, CnhType cnhType, string cnhImagePath)
         {
             Name = name;
-            Cnpj = cnpj;
-            BirthDate = birthDate;
+            Cnpj = SanitizeCnpj(cnpj);
+            Birthdate = birthdate;
             CnhNumber = cnhNumber;
             CnhType = cnhType;
             CnhImagePath = cnhImagePath;
+
+            Validate();
 
             Rentals = new List<Rental>();
         }
 
         public string Name { get; private set; }
         public string Cnpj { get; private set; }
-        public DateTime BirthDate { get; private set; }
+        public DateTime Birthdate { get; private set; }
         public string CnhNumber { get; private set; }
         public CnhType CnhType { get; private set; }
-        public string? CnhImagePath { get; private set; }
+        public string CnhImagePath { get; private set; }
+        
+        public ICollection<Rental> Rentals { get; private set; }
 
-        public ICollection<Rental> Rentals { get; set; }
+        private void Validate()
+        {
+            ValidateName();
+            ValidateCnpj();
+            ValidateBirthdate();
+            ValidateCnhNumber();
+            ValidateCnhType();
+            ValidateCnhImagePath();
+        }
+
+        private void ValidateName()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                throw new DomainException("Name is required.");
+            }
+        }
+
+        private void ValidateCnpj()
+        {
+            if (string.IsNullOrWhiteSpace(Cnpj))
+            {
+                throw new DomainException("CNPJ is required.");
+            }
+            
+            if(Cnpj.Length != 14)
+            {
+                throw new DomainException("Invalid CNPJ.");
+            }
+        }
+
+        private void ValidateBirthdate()
+        {
+            if(Birthdate == default || Birthdate.Year < 1900)
+            {
+                throw new DomainException("Invalid birthdate.");
+            }
+
+            int age = DateTime.UtcNow.Year - Birthdate.Year;
+            if (Birthdate.Date > DateTime.UtcNow.AddYears(-age))
+            {
+                age--;
+            }
+
+            if (age < 18)
+            {
+                throw new DomainException("Delivery Driver must be over 18 years old.");
+            }
+        }
+
+        private void ValidateCnhNumber()
+        {
+            if (string.IsNullOrWhiteSpace(CnhNumber))
+            {
+                throw new DomainException("Invalid CNH Number.");
+            }
+        }
+
+        private void ValidateCnhType()
+        {
+            if (!Enum.IsDefined(typeof(CnhType), CnhType)) 
+            {
+                throw new DomainException("Invalid CNH Type.");
+            }                
+        }
+
+        private void ValidateCnhImagePath()
+        {
+            if (string.IsNullOrWhiteSpace(CnhImagePath))
+            {
+                throw new DomainException("Invalid CNH Image.");
+            }
+            string extension = System.IO.Path.GetExtension(CnhImagePath).ToUpperInvariant();
+            if(extension != ".PNG" && extension != ".BMP")
+            {
+                throw new DomainException("CNH image format must be PNJ or BMP.");
+            }
+        }
+
+        private string SanitizeCnpj(string cnpj)
+        {
+            return cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
+        }
+
+        public bool HasValidCnhToRentMotorcycle()
+        {
+            if(this.CnhType == CnhType.A)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
