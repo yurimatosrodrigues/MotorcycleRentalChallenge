@@ -5,9 +5,10 @@ namespace MotorcycleRentalChallenge.Core.Entities
 {
     public class DeliveryDriver : BaseEntity
     {
-        public DeliveryDriver(string name, string cnpj, DateTime birthdate, 
+        public DeliveryDriver(string identifier, string name, string cnpj, DateTime birthdate, 
             string cnhNumber, CnhType cnhType, string cnhImagePath)
         {
+            Identifier = identifier;
             Name = name;
             Cnpj = SanitizeCnpj(cnpj);
             Birthdate = birthdate;
@@ -20,6 +21,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
             Rentals = new List<Rental>();
         }
 
+        public string Identifier { get; private set; }
         public string Name { get; private set; }
         public string Cnpj { get; private set; }
         public DateTime Birthdate { get; private set; }
@@ -31,12 +33,21 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
         private void Validate()
         {
+            ValidateIdentifier();
             ValidateName();
             ValidateCnpj();
             ValidateBirthdate();
             ValidateCnhNumber();
             ValidateCnhType();
             ValidateCnhImagePath();
+        }
+
+        private void ValidateIdentifier()
+        {
+            if (string.IsNullOrWhiteSpace(Identifier))
+            {
+                throw new DomainException("Identifier is required.");
+            }
         }
 
         private void ValidateName()

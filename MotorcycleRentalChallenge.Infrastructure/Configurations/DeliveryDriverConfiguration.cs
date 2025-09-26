@@ -9,7 +9,7 @@ namespace MotorcycleRentalChallenge.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<DeliveryDriver> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).IsRequired().HasMaxLength(100);
+            builder.Property(x => x.Identifier).IsRequired().HasMaxLength(20);
 
             builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Cnpj).IsRequired().HasMaxLength(14);
@@ -18,7 +18,7 @@ namespace MotorcycleRentalChallenge.Infrastructure.Configurations
             builder.HasIndex(x => x.CnhNumber).IsUnique();
             builder.Property(x => x.CnhType).IsRequired();
             builder.Property(x => x.Birthdate).IsRequired();
-            builder.Property(x => x.CnhImagePath).HasMaxLength(1000);
+            builder.Property(x => x.CnhImagePath).IsRequired().HasMaxLength(1000);
             builder.Property(x => x.CreatedAt).IsRequired();
         }
     }

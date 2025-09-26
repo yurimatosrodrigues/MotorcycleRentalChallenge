@@ -8,7 +8,8 @@ namespace MotorcycleRentalChallenge.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Motorcycle> builder)
         {
-            builder.HasKey(x => x.Id); 
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Identifier).IsRequired().HasMaxLength(20);
 
             builder.Property(x => x.Plate).IsRequired().HasMaxLength(8);
             builder.HasIndex(x => x.Plate).IsUnique();

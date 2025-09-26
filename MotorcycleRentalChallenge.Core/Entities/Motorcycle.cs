@@ -4,8 +4,9 @@ namespace MotorcycleRentalChallenge.Core.Entities
 {
     public class Motorcycle : BaseEntity
     {
-        public Motorcycle(int year, string model, string plate)
+        public Motorcycle(string identifier, int year, string model, string plate)
         {
+            Identifier = identifier;
             Year = year;
             Model = model;
             Plate = plate.ToUpperInvariant();
@@ -15,6 +16,8 @@ namespace MotorcycleRentalChallenge.Core.Entities
             Rentals = new List<Rental>();
         }
 
+        public string Identifier { get; set; }
+
         public int Year { get; private set; }
         public string Model { get; private set; }
         public string Plate { get; private set; }
@@ -23,9 +26,18 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
         private void Validate()
         {
+            ValidateIdentifier();
             ValidateYear();
             ValidateModel();
             ValidatePlate();
+        }
+
+        private void ValidateIdentifier()
+        {
+            if (string.IsNullOrWhiteSpace(Identifier))
+            {
+                throw new DomainException("Identifier is required.");
+            }
         }
 
         private void ValidateYear()
