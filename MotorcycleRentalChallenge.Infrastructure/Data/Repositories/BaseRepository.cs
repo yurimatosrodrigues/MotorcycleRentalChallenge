@@ -1,33 +1,44 @@
-﻿using MotorcycleRentalChallenge.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MotorcycleRentalChallenge.Core.Entities;
 using MotorcycleRentalChallenge.Core.Repositories;
 
 namespace MotorcycleRentalChallenge.Infrastructure.Data.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        public Task AddAsync(T entity)
+        protected readonly AppDbContext _context;
+
+        public BaseRepository(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public Task RemoveAsync(T entity)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public Task UpdateAsync(T entity)
+        public virtual async Task RemoveAsync(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public virtual async Task UpdateAsync(T entity)
+        {
+            _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

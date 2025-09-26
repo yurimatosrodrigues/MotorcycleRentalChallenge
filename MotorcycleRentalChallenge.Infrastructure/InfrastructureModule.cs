@@ -21,10 +21,7 @@ namespace MotorcycleRentalChallenge.Infrastructure
         {            
             services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-
-            //Migrations
-            services.BuildServiceProvider().GetRequiredService<AppDbContext>().Database.Migrate();
-        
+                    
             return services;
         }
 

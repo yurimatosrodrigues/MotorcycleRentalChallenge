@@ -1,18 +1,25 @@
-﻿using MotorcycleRentalChallenge.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MotorcycleRentalChallenge.Core.Entities;
 using MotorcycleRentalChallenge.Core.Repositories;
 
 namespace MotorcycleRentalChallenge.Infrastructure.Data.Repositories
 {
     public class DeliveryDriverRepository : BaseRepository<DeliveryDriver>, IDeliveryDriverRepository
     {
-        public Task<DeliveryDriver> GetByCnhNumberAsync(string cnhNumber)
+        public DeliveryDriverRepository(AppDbContext context) : base(context)
         {
-            throw new NotImplementedException();
         }
 
-        public Task<DeliveryDriver> GetByCnpjAsync(string cnpj)
+        public async Task<DeliveryDriver> GetByCnhNumberAsync(string cnhNumber)
         {
-            throw new NotImplementedException();
+            return await _context.Set<DeliveryDriver>()
+                .FirstOrDefaultAsync(x => x.CnhNumber == cnhNumber);
+        }
+
+        public async Task<DeliveryDriver> GetByCnpjAsync(string cnpj)
+        {
+            return await _context.Set<DeliveryDriver>()
+                .FirstOrDefaultAsync(x => x.Cnpj == cnpj);
         }
     }
 }
