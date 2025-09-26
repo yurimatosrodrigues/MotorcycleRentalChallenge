@@ -19,7 +19,7 @@ COPY ["MotorcycleRentalChallenge.Infrastructure/MotorcycleRentalChallenge.Infras
 
 RUN dotnet restore "./MotorcycleRentalChallenge.API/MotorcycleRentalChallenge.API.csproj"
 COPY . .
-WORKDIR "/MotorcycleRentalChallenge.API"
+WORKDIR "./MotorcycleRentalChallenge.API"
 RUN dotnet build "./MotorcycleRentalChallenge.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

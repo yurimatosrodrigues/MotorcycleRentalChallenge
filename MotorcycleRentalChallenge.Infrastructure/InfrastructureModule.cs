@@ -19,8 +19,11 @@ namespace MotorcycleRentalChallenge.Infrastructure
 
         private static IServiceCollection AddPostgreSQL(this IServiceCollection services, IConfiguration configuration)
         {            
-            services.AddDbContext<AppDbContext>(options => 
+            services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+            //Migrations
+            services.BuildServiceProvider().GetRequiredService<AppDbContext>().Database.Migrate();
         
             return services;
         }
