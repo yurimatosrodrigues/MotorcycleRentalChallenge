@@ -19,7 +19,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
         public string Model { get; private set; }
         public string Plate { get; private set; }
         
-        public ICollection<Rental> Rentals { get; private set; }
+        public virtual ICollection<Rental> Rentals { get; private set; }
 
         private void Validate()
         {
@@ -61,6 +61,12 @@ namespace MotorcycleRentalChallenge.Core.Entities
         {
             Plate = newPlate.ToUpperInvariant();
             ValidatePlate();
+        }
+
+        public bool CanBeDeleted()
+        {
+            if (Rentals.Count == 0) return true;
+            return false;
         }
 
     }

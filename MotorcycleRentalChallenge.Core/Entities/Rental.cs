@@ -21,11 +21,11 @@ namespace MotorcycleRentalChallenge.Core.Entities
         }
 
         public Guid MotorcycleId { get; private set; }
-        public Motorcycle Motorcycle { get; private set; }
+        public virtual Motorcycle Motorcycle { get; private set; }
         public Guid DeliveryDriverId { get; private set; }
-        public DeliveryDriver DeliveryDriver { get; private set; }
+        public virtual DeliveryDriver DeliveryDriver { get; private set; }
         public Guid RentalPlanId { get; private set; }
-        public RentalPlan RentalPlan { get; private set; }
+        public virtual RentalPlan RentalPlan { get; private set; }
 
         public DateTime StartDate { get; private set; }
         public DateTime ExpectedEndDate { get; private set; }
@@ -39,6 +39,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
             ValidateMotorcycleId();
             ValidateDeliveryDriverId();
             ValidateRentalPlanId();
+            ValidateDates();
         }
 
         private void ValidateMotorcycleId()
@@ -65,9 +66,32 @@ namespace MotorcycleRentalChallenge.Core.Entities
             }
         }
 
+        private void ValidateDates()
+        {
+            if (StartDate < DateTime.UtcNow.Date)
+            {
+                throw new DomainException("Start date must be in the future.");
+            }
+
+            if (ExpectedEndDate <= StartDate)
+            {
+                throw new DomainException("Expected end date must be after start date.");
+            }
+        }
+
+        private void ValidateEndDate()
+        {            
+            if(EndDate < StartDate)
+            {
+                throw new DomainException("End date invalid.");
+            }
+        }
+
         public decimal CalculateTotalRentalCost(DateTime rentalEndDate)
         {
             EndDate = rentalEndDate;
+
+            ValidateEndDate();
 
             decimal totalCost = 0;
 
@@ -88,6 +112,8 @@ namespace MotorcycleRentalChallenge.Core.Entities
                 totalCost = RentalPlan.Days * RentalPlan.DailyRate;
                 totalCost = totalCost + (daysExceeded * 50m);
             }
+
+            TotalCost = totalCost;
 
             return totalCost;
         }

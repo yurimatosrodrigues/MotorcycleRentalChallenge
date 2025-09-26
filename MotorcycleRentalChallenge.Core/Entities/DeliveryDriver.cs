@@ -27,7 +27,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
         public CnhType CnhType { get; private set; }
         public string CnhImagePath { get; private set; }
         
-        public ICollection<Rental> Rentals { get; private set; }
+        public virtual ICollection<Rental> Rentals { get; private set; }
 
         private void Validate()
         {
