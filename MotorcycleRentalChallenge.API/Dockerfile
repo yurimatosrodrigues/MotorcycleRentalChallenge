@@ -13,9 +13,13 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MotorcycleRentalChallenge.API/MotorcycleRentalChallenge.API.csproj", "MotorcycleRentalChallenge.API/"]
+COPY ["MotorcycleRentalChallenge.Application/MotorcycleRentalChallenge.Application.csproj", "MotorcycleRentalChallenge.Application/"]
+COPY ["MotorcycleRentalChallenge.Core/MotorcycleRentalChallenge.Core.csproj", "MotorcycleRentalChallenge.Core/"]
+COPY ["MotorcycleRentalChallenge.Infrastructure/MotorcycleRentalChallenge.Infrastructure.csproj", "MotorcycleRentalChallenge.Infrastructure/"]
+
 RUN dotnet restore "./MotorcycleRentalChallenge.API/MotorcycleRentalChallenge.API.csproj"
 COPY . .
-WORKDIR "/src/MotorcycleRentalChallenge.API"
+WORKDIR "/MotorcycleRentalChallenge.API"
 RUN dotnet build "./MotorcycleRentalChallenge.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

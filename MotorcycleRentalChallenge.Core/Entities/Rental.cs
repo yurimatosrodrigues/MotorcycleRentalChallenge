@@ -4,7 +4,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
 {
     public class Rental : BaseEntity
     {
-        public Rental(Guid motorcycleId, Guid deliveryDriverId, RentalPlan rentalPlan) {
+        public Rental(Guid motorcycleId, Guid deliveryDriverId, Guid rentalplanId, RentalPlan rentalPlan) {
             MotorcycleId = motorcycleId;
             
             DeliveryDriverId = deliveryDriverId;
@@ -19,6 +19,8 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
             Validate();
         }
+
+        protected Rental() { }
 
         public Guid MotorcycleId { get; private set; }
         public virtual Motorcycle Motorcycle { get; private set; }

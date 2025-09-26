@@ -2,10 +2,10 @@
 {
     public class RentalPlan : BaseEntity
     {
-        public RentalPlan(int days, decimal dailyCost, decimal? penaltyPercentage) {
+        public RentalPlan(int days, decimal dailyRate, decimal? penaltyPercentageForUnusedDays) {
             Days = days;
-            DailyRate = dailyCost;
-            PenaltyPercentageForUnusedDays = penaltyPercentage;
+            DailyRate = dailyRate;
+            PenaltyPercentageForUnusedDays = penaltyPercentageForUnusedDays;
 
             Rentals = new List<Rental>();
         }
