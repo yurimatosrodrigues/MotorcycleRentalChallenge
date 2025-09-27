@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MotorcycleRentalChallenge.Application;
 using MotorcycleRentalChallenge.Infrastructure;
 using MotorcycleRentalChallenge.Infrastructure.Data;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 builder.Services.AddCors(options =>
 {
