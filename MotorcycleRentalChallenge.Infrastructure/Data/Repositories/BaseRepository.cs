@@ -13,10 +13,12 @@ namespace MotorcycleRentalChallenge.Infrastructure.Data.Repositories
             _context = context;
         }
 
-        public virtual async Task AddAsync(T entity)
+        public virtual async Task<Guid> AddAsync(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
+            var result = await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
+
+            return entity.Id;
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()

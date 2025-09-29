@@ -5,8 +5,9 @@ namespace MotorcycleRentalChallenge.Application.Interfaces
 {
     public interface IMotorcycleService
     {
-        Task AddAsync(AddMotorcycleInputModel model);
+        Task<Guid> AddAsync(AddMotorcycleInputModel model);
         Task<MotorcycleViewModel> GetByIdAsync(Guid id);
+        Task<IEnumerable<MotorcycleViewModel>> GetByPlate(string plate);
         Task<IEnumerable<MotorcycleViewModel>> GetAllAsync();
         Task UpdateAsync(Guid id, UpdateMotorcycleInputModel model);
         Task DeleteAsync(Guid id);

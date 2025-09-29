@@ -4,7 +4,7 @@ namespace MotorcycleRentalChallenge.Core.Repositories
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
-        Task AddAsync(T entity);
+        Task<Guid> AddAsync(T entity);
 
         Task<T> GetByIdAsync(Guid id);
 

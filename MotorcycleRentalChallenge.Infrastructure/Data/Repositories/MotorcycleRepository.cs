@@ -10,10 +10,15 @@ namespace MotorcycleRentalChallenge.Infrastructure.Data.Repositories
         {
         }
 
-        public async Task<Motorcycle> GetByPlateAsync(string plate)
+        public async Task<IEnumerable<Motorcycle>> GetByPlateAsync(string? plate)
         {
-            return await _context.Set<Motorcycle>()
-                .FirstOrDefaultAsync(x => x.Plate == plate.ToUpperInvariant());
+            var query = _context.Set<Motorcycle>().AsQueryable();
+            if (!string.IsNullOrWhiteSpace(plate))
+            {
+                query = query.Where(x => x.Plate == plate.ToUpperInvariant());
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

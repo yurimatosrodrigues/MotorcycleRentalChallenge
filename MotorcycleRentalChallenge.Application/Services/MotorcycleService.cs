@@ -13,19 +13,19 @@ namespace MotorcycleRentalChallenge.Application.Services
         {
             _motorcycleRepository = motorcycleRepository;
         }
-        public async Task AddAsync(AddMotorcycleInputModel model)
+        public async Task<Guid> AddAsync(AddMotorcycleInputModel model)
         {
             var motorcycle = model.ToEntity();
 
             var motorcyclePlate = await _motorcycleRepository.GetByPlateAsync(motorcycle.Plate);
-            if (motorcyclePlate != null)
+            if (motorcyclePlate.Any())
             {
                 throw new DomainException("There is already a motorcycle with this plate.");
             }
 
-            await _motorcycleRepository.AddAsync(motorcycle);
+            var id = await _motorcycleRepository.AddAsync(motorcycle);
 
-            return;
+            return id;
         }
 
         public Task DeleteAsync(Guid id)
@@ -41,6 +41,13 @@ namespace MotorcycleRentalChallenge.Application.Services
         public Task<MotorcycleViewModel> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<MotorcycleViewModel>> GetByPlate(string? plate)
+        {
+            var motorcycles = await _motorcycleRepository.GetByPlateAsync(plate);
+
+            return motorcycles.Select(x => new MotorcycleViewModel(x.Id, x.Identifier, x.Year, x.Model, x.Plate));
         }
 
         public Task UpdateAsync(Guid id, UpdateMotorcycleInputModel model)

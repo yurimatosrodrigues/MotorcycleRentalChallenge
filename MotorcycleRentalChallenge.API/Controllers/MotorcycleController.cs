@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MotorcycleRentalChallenge.Application.InputModel;
 using MotorcycleRentalChallenge.Application.Interfaces;
 using MotorcycleRentalChallenge.Core.Exceptions;
@@ -22,18 +21,37 @@ namespace MotorcycleRentalChallenge.API.Controllers
         {
             try
             {
-                await _motorcycleService.AddAsync(request);
+                var id = await _motorcycleService.AddAsync(request);
 
-                return Ok();
+                return CreatedAtAction(nameof(Get), new { id }, null);
             }
             catch(DomainException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { mensagem = ex.Message });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }            
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] string? plate)
+        {
+            try
+            {
+                var motorcycles = await _motorcycleService.GetByPlate(plate);
+               
+                return Ok(motorcycles);
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }
