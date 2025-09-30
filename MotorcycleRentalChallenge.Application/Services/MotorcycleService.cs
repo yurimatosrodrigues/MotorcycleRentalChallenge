@@ -13,6 +13,7 @@ namespace MotorcycleRentalChallenge.Application.Services
         {
             _motorcycleRepository = motorcycleRepository;
         }
+
         public async Task<Guid> AddAsync(AddMotorcycleInputModel model)
         {
             var motorcycle = model.ToEntity();
@@ -28,31 +29,53 @@ namespace MotorcycleRentalChallenge.Application.Services
             return id;
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var motorcycle = await _motorcycleRepository.GetByIdAsync(id);
+
+            if (motorcycle == null)
+            {
+                throw new NotFoundException("Motorcycle doesn't exist.");
+            }
+
+            if(!motorcycle.CanBeDeleted()){
+                throw new DomainException("Motorcycle had rentals and cannot be deleted.");
+            }
+
+            await _motorcycleRepository.RemoveAsync(motorcycle);
         }
 
-        public Task<IEnumerable<MotorcycleViewModel>> GetAllAsync()
+        public async Task<MotorcycleViewModel> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var motorcycle = await _motorcycleRepository.GetByIdAsync(id);
+
+            if (motorcycle == null)
+            {
+                throw new NotFoundException("Motorcycle doesn't exist.");
+            }
+
+            return new MotorcycleViewModel(motorcycle.Id, motorcycle.Identifier, motorcycle.Year, motorcycle.Model, motorcycle.Plate);
         }
 
-        public Task<MotorcycleViewModel> GetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<MotorcycleViewModel>> GetByPlate(string? plate)
+        public async Task<IEnumerable<MotorcycleViewModel>> GetByPlateAsync(string? plate)
         {
             var motorcycles = await _motorcycleRepository.GetByPlateAsync(plate);
 
             return motorcycles.Select(x => new MotorcycleViewModel(x.Id, x.Identifier, x.Year, x.Model, x.Plate));
         }
 
-        public Task UpdateAsync(Guid id, UpdateMotorcycleInputModel model)
+        public async Task UpdateAsync(Guid id, UpdateMotorcycleInputModel model)
         {
-            throw new NotImplementedException();
+            var motorcycle = await _motorcycleRepository.GetByIdAsync(id);
+
+            if(motorcycle == null)
+            {
+                throw new DomainException("Motorcycle doesn't exist.");
+            }
+
+            motorcycle.UpdatePlate(model.Plate);
+
+            await _motorcycleRepository.UpdateAsync(motorcycle);
         }
     }
 }
