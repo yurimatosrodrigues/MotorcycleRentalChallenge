@@ -1,7 +1,6 @@
 ﻿using MotorcycleRentalChallenge.Application.Extensions;
 using MotorcycleRentalChallenge.Core.Entities;
 using MotorcycleRentalChallenge.Core.Enums;
-using MotorcycleRentalChallenge.Infrastructure.Storage;
 using System.Text.Json.Serialization;
 
 namespace MotorcycleRentalChallenge.Application.InputModel

@@ -33,6 +33,7 @@ namespace MotorcycleRentalChallenge.Infrastructure
             services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
             services.AddScoped<IRentalRepository, RentalRepository>();
             services.AddScoped<IFileStorageService, LocalStorageService>();
+            services.AddScoped<IRentalPlanRepository, RentalPlanRepository>();
 
             return services;
         }

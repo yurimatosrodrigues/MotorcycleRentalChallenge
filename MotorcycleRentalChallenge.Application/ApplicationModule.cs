@@ -16,6 +16,8 @@ namespace MotorcycleRentalChallenge.Application
         {
             services.AddScoped<IMotorcycleService, MotorcycleService>();
             services.AddScoped<IDeliveryDriverService, DeliveryDriverService>();
+            services.AddScoped<IRentalService, RentalService>();
+
             return services;
         }
     }
