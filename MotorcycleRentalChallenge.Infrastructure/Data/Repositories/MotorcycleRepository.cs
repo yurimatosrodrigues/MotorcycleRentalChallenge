@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotorcycleRentalChallenge.Core.Entities;
-using MotorcycleRentalChallenge.Core.Repositories;
+using MotorcycleRentalChallenge.Core.Interfaces.Repositories;
 
 namespace MotorcycleRentalChallenge.Infrastructure.Data.Repositories
 {

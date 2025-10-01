@@ -1,6 +1,6 @@
 ﻿using MotorcycleRentalChallenge.Core.Entities;
 
-namespace MotorcycleRentalChallenge.Core.Repositories
+namespace MotorcycleRentalChallenge.Core.Interfaces.Repositories
 {
     public interface IMotorcycleRepository : IBaseRepository<Motorcycle>
     {

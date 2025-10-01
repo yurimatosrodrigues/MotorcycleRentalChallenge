@@ -29,6 +29,8 @@ namespace MotorcycleRentalChallenge.Infrastructure.Data
                 new RentalPlan(45, 20m, null),
                 new RentalPlan(50, 18m, null)
             );
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
     }
 }

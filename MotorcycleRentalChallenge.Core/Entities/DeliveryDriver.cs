@@ -112,10 +112,10 @@ namespace MotorcycleRentalChallenge.Core.Entities
             {
                 throw new DomainException("Invalid CNH Image.");
             }
-            string extension = System.IO.Path.GetExtension(CnhImagePath).ToUpperInvariant();
-            if(extension != ".PNG" && extension != ".BMP")
+            string extension = Path.GetExtension(CnhImagePath).ToLowerInvariant();
+            if(extension != ".png" && extension != ".bmp")
             {
-                throw new DomainException("CNH image format must be PNJ or BMP.");
+                throw new DomainException("CNH image format must be PNG or BMP.");
             }
         }
 
@@ -131,6 +131,12 @@ namespace MotorcycleRentalChallenge.Core.Entities
                 return true;
             }
             return false;
+        }
+
+        public void UpdateCnhImage(string imagePath)
+        {
+            CnhImagePath = imagePath;
+            ValidateCnhImagePath();
         }
     }
 }

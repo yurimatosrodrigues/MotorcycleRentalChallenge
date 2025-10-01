@@ -15,6 +15,7 @@ namespace MotorcycleRentalChallenge.Application
         private static IServiceCollection AddApplicationServices(this IServiceCollection services) 
         {
             services.AddScoped<IMotorcycleService, MotorcycleService>();
+            services.AddScoped<IDeliveryDriverService, DeliveryDriverService>();
             return services;
         }
     }

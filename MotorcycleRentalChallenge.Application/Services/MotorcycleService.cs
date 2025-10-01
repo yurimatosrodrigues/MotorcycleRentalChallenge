@@ -2,7 +2,7 @@
 using MotorcycleRentalChallenge.Application.Interfaces;
 using MotorcycleRentalChallenge.Application.ViewModel;
 using MotorcycleRentalChallenge.Core.Exceptions;
-using MotorcycleRentalChallenge.Core.Repositories;
+using MotorcycleRentalChallenge.Core.Interfaces.Repositories;
 
 namespace MotorcycleRentalChallenge.Application.Services
 {

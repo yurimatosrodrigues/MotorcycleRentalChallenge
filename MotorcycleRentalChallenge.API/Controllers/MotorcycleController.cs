@@ -23,7 +23,7 @@ namespace MotorcycleRentalChallenge.API.Controllers
             {
                 var id = await _motorcycleService.AddAsync(request);
 
-                return CreatedAtAction(nameof(Get), new { id }, null);
+                return CreatedAtAction(nameof(Get), new { id }, new { id });
             }
             catch (DomainException ex)
             {

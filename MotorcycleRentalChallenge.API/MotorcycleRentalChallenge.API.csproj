@@ -24,4 +24,8 @@
     <ProjectReference Include="..\MotorcycleRentalChallenge.Infrastructure\MotorcycleRentalChallenge.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
