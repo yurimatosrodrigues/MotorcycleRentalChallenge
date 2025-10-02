@@ -20,5 +20,12 @@ namespace MotorcycleRentalChallenge.Infrastructure.Data.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<Motorcycle> GetByIdAsync(Guid id)
+        {
+            return await _context.Set<Motorcycle>()
+                .Include(r => r.Rentals)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

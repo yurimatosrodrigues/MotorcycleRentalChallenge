@@ -1,4 +1,6 @@
-﻿namespace MotorcycleRentalChallenge.Application.ViewModel
+﻿using System.Text.Json.Serialization;
+
+namespace MotorcycleRentalChallenge.Application.ViewModel
 {
     public class MotorcycleViewModel
     {
@@ -11,10 +13,19 @@
             Plate = plate;
         }
 
+        [JsonPropertyName("id")]
         public Guid Id { get; set; }
+        
+        [JsonPropertyName("identificador")]
         public string Identifier { get; set; }
+
+        [JsonPropertyName("ano")]
         public int Year { get; set; }
+
+        [JsonPropertyName("modelo")]
         public string Model { get; set; }
+        
+        [JsonPropertyName("placa")]
         public string Plate { get; set; }
     }
 }

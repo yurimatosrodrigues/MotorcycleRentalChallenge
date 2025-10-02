@@ -81,5 +81,22 @@ namespace MotorcycleRentalChallenge.Core.Entities
             return false;
         }
 
+        public bool CanBeRented()
+        {
+            var lastRental = Rentals.OrderByDescending(x => x.CreatedAt).FirstOrDefault();
+            if (lastRental != null) 
+            { 
+                if(!lastRental.EndDate.HasValue)
+                {
+                    return false;
+                }
+                if (lastRental.EndDate >= DateTime.UtcNow.Date)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
     }
 }

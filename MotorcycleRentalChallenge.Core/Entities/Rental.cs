@@ -140,11 +140,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
         }
 
         public decimal CompleteRent(DateTime rentalEndDate)
-        {
-            if (EndDate != null)
-            {
-                throw new DomainException("Return date already filled in. Rental has already completed.");
-            }
+        {           
             TotalCost = CalculateTotalRentalCost(rentalEndDate);
             EndDate = rentalEndDate;
 

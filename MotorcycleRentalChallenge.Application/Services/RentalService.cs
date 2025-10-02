@@ -57,17 +57,22 @@ namespace MotorcycleRentalChallenge.Application.Services
                 throw new NotFoundException($"There is no Motorcycle with this Id.");
             }
 
+            if (!motorcycle.CanBeRented())
+            {
+                throw new DomainException("Motorcycle is already rented.");
+            }
+
             if (!driver.HasValidCnhToRentMotorcycle())
             {
                 throw new DomainException("Delivery driver doen't have a valid CNH Type to rent a motorcycle.");
             }
 
-            return await _rentalRepository.AddAsync(entity);            
+            return await _rentalRepository.AddAsync(entity);
         }
 
         public async Task<RentalViewModel> GetByIdAsync(Guid id)
         {
-            var rental = await _rentalRepository.GetByIdAsync(id);            
+            var rental = await _rentalRepository.GetByIdAsync(id);
             if (rental == null)
             {
                 throw new NotFoundException("Rental doesn't exist.");
