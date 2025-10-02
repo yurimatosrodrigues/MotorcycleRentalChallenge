@@ -7,6 +7,6 @@ namespace MotorcycleRentalChallenge.Application.Interfaces
     {
         Task<Guid> AddAsync(AddRentalInputModel model);
         Task<RentalViewModel> GetByIdAsync(Guid id);
-        Task UpdateAsync(Guid id, UpdateRentalInputModel model);
+        Task<decimal> UpdateAsync(Guid id, UpdateRentalInputModel model);
     }
 }

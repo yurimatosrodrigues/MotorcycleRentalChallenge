@@ -12,14 +12,14 @@ namespace MotorcycleRentalChallenge.Application.InputModel
         [JsonPropertyName("moto_id")]
         public string MotorcycleId { get; set; }
 
-        [JsonPropertyName("data_inicio")]
-        public DateTime StartDate { get; set; }
+        [JsonPropertyName("data_inicio")]        
+        public DateTime? StartDate { get; set; }
 
         [JsonPropertyName("data_termino")]
         public DateTime? EndDate { get; set; }
 
         [JsonPropertyName("data_previsao_termino")]
-        public DateTime ExpectedEndDate { get; set; }
+        public DateTime? ExpectedEndDate { get; set; }
 
         [JsonPropertyName("plano")]
         public int RentalPlanDays { get; set; }
@@ -30,10 +30,28 @@ namespace MotorcycleRentalChallenge.Application.InputModel
             {
                 throw new DomainException("Invalid Delivery Driver Id.");
             }
-
+            
             if (!Guid.TryParse(MotorcycleId, out var guidMotorcycle))
             {
                 throw new DomainException("Invalid Motorcycle Id.");
+            }
+
+            if (StartDate.HasValue || EndDate.HasValue || ExpectedEndDate.HasValue)
+            {
+                if (!StartDate.HasValue || !EndDate.HasValue || !ExpectedEndDate.HasValue)
+                {
+                    throw new DomainException("You must provide all dates (start, end, expected end) or none.");
+                }
+
+                return new Rental(
+                    guidMotorcycle,
+                    guidDeliveryDriver,
+                    rentalPlan.Id,
+                    rentalPlan,
+                    StartDate.Value,
+                    EndDate.Value,
+                    ExpectedEndDate.Value
+                );
             }
 
             return new Rental(guidMotorcycle, guidDeliveryDriver, rentalPlan.Id, rentalPlan);

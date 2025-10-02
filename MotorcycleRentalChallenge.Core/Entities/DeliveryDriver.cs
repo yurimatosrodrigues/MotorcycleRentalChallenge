@@ -126,7 +126,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
         public bool HasValidCnhToRentMotorcycle()
         {
-            if(this.CnhType == CnhType.A)
+            if(this.CnhType == CnhType.A || this.CnhType == CnhType.AB)
             {
                 return true;
             }

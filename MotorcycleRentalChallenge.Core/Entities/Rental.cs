@@ -15,9 +15,29 @@ namespace MotorcycleRentalChallenge.Core.Entities
             DailyRate = rentalPlan.DailyRate;
             
             StartDate = CreatedAt.AddDays(1);
-            ExpectedEndDate = StartDate.AddDays(rentalPlan.Days);
+            ExpectedEndDate = CreatedAt.AddDays(rentalPlan.Days);
 
             Validate();
+        }
+
+        public Rental(Guid motorcycleId, Guid deliveryDriverId, Guid rentalplanId, RentalPlan rentalPlan,
+            DateTime startDate, DateTime endDate, DateTime expectedEndDate)
+        {
+            MotorcycleId = motorcycleId;
+
+            DeliveryDriverId = deliveryDriverId;
+
+            RentalPlanId = rentalPlan.Id;
+            RentalPlan = rentalPlan;
+
+            DailyRate = rentalPlan.DailyRate;
+
+            StartDate = startDate;
+            EndDate = endDate;
+            ExpectedEndDate = expectedEndDate;
+
+            Validate();
+            ValidateReturnDate(endDate);
         }
 
         protected Rental() { }
@@ -31,7 +51,9 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
         public DateTime StartDate { get; private set; }
         public DateTime ExpectedEndDate { get; private set; }
-        public DateTime? EndDate { get; private set; }
+        
+        ///Return Date
+        public DateTime? EndDate { get; private set; } 
 
         public decimal DailyRate { get; private set; }
         public decimal TotalCost { get; private set; }
@@ -81,9 +103,9 @@ namespace MotorcycleRentalChallenge.Core.Entities
             }
         }
 
-        private void ValidateEndDate()
-        {            
-            if(EndDate < StartDate)
+        private void ValidateReturnDate(DateTime returnDate)
+        {
+            if (returnDate < StartDate)
             {
                 throw new DomainException("End date invalid.");
             }
@@ -91,13 +113,12 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
         public decimal CalculateTotalRentalCost(DateTime rentalEndDate)
         {
-            EndDate = rentalEndDate;
-
-            ValidateEndDate();
+            ValidateReturnDate(rentalEndDate);
 
             decimal totalCost = 0;
 
-            int daysRented = (rentalEndDate - StartDate).Days;
+            int daysRented = (rentalEndDate.Date - StartDate.Date).Days + 1;
+
             totalCost = daysRented * RentalPlan.DailyRate;
 
             if(EndDate < ExpectedEndDate)
@@ -115,9 +136,19 @@ namespace MotorcycleRentalChallenge.Core.Entities
                 totalCost = totalCost + (daysExceeded * 50m);
             }
 
-            TotalCost = totalCost;
-
             return totalCost;
+        }
+
+        public decimal CompleteRent(DateTime rentalEndDate)
+        {
+            if (EndDate != null)
+            {
+                throw new DomainException("Return date already filled in. Rental has already completed.");
+            }
+            TotalCost = CalculateTotalRentalCost(rentalEndDate);
+            EndDate = rentalEndDate;
+
+            return TotalCost;
         }
     }
 }

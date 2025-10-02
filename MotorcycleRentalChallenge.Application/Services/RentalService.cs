@@ -49,7 +49,7 @@ namespace MotorcycleRentalChallenge.Application.Services
             if (driver == null)
             {
                 throw new NotFoundException($"There is no Delivery Driver with this Id.");
-            }           
+            }
 
             var motorcycle = await _motorcycleRepository.GetByIdAsync(motorcycleId);
             if (motorcycle == null)
@@ -67,12 +67,30 @@ namespace MotorcycleRentalChallenge.Application.Services
 
         public async Task<RentalViewModel> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var rental = await _rentalRepository.GetByIdAsync(id);            
+            if (rental == null)
+            {
+                throw new NotFoundException("Rental doesn't exist.");
+            }
+            
+            //'EndDate' from Rental model is the 'Return Date'
+            return new RentalViewModel(rental.Id, rental.DailyRate, rental.DeliveryDriverId, rental.MotorcycleId,
+                rental.StartDate, rental.ExpectedEndDate, rental.EndDate);
         }
 
-        public Task UpdateAsync(Guid id, UpdateRentalInputModel model)
+        public async Task<decimal> UpdateAsync(Guid id, UpdateRentalInputModel model)
         {
-            throw new NotImplementedException();
+            var rental = await _rentalRepository.GetByIdAsync(id);
+            if (rental == null)
+            {
+                throw new NotFoundException("Rental doesn't exist.");
+            }
+
+            decimal totalCost = rental.CompleteRent(model.ReturnDate);
+
+            await _rentalRepository.UpdateAsync(rental);
+
+            return totalCost;
         }
 
     }
