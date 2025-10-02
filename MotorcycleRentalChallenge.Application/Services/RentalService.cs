@@ -44,7 +44,7 @@ namespace MotorcycleRentalChallenge.Application.Services
             }
 
             var entity = model.ToEntity(rentalPlan);
-
+            
             var driver = await _deliveryDriverRepository.GetByIdAsync(driverId);
             if (driver == null)
             {
@@ -55,12 +55,17 @@ namespace MotorcycleRentalChallenge.Application.Services
             if (motorcycle == null)
             {
                 throw new NotFoundException($"There is no Motorcycle with this Id.");
-            }            
+            }
+
+            if (!driver.HasValidCnhToRentMotorcycle())
+            {
+                throw new DomainException("Delivery driver doen't have a valid CNH Type to rent a motorcycle.");
+            }
 
             return await _rentalRepository.AddAsync(entity);            
         }
 
-        public Task<RentalViewModel> GetByIdAsync(Guid id)
+        public async Task<RentalViewModel> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
