@@ -107,7 +107,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
         {
             if (returnDate < StartDate)
             {
-                throw new DomainException("End date invalid.");
+                throw new DomainException("Return Date must be greater than Start Date.");
             }
         }
 
@@ -121,7 +121,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
             totalCost = daysRented * RentalPlan.DailyRate;
 
-            if(EndDate < ExpectedEndDate)
+            if(rentalEndDate < ExpectedEndDate)
             {
                 int daysLeft = RentalPlan.Days - daysRented;
 
@@ -129,9 +129,9 @@ namespace MotorcycleRentalChallenge.Core.Entities
                                 
                 totalCost = totalCost + penalty;
             }
-            else if(EndDate > ExpectedEndDate)
+            else if(rentalEndDate > ExpectedEndDate)
             {
-                int daysExceeded = (rentalEndDate - ExpectedEndDate).Days;
+                int daysExceeded = (rentalEndDate.Date - ExpectedEndDate.Date).Days + 1;
                 totalCost = RentalPlan.Days * RentalPlan.DailyRate;
                 totalCost = totalCost + (daysExceeded * 50m);
             }
