@@ -5,6 +5,7 @@ using MotorcycleRentalChallenge.Core.Interfaces.Repositories;
 using MotorcycleRentalChallenge.Core.Interfaces.Storage;
 using MotorcycleRentalChallenge.Infrastructure.Data;
 using MotorcycleRentalChallenge.Infrastructure.Data.Repositories;
+using MotorcycleRentalChallenge.Infrastructure.Messaging;
 using MotorcycleRentalChallenge.Infrastructure.Storage;
 
 namespace MotorcycleRentalChallenge.Infrastructure
@@ -36,6 +37,7 @@ namespace MotorcycleRentalChallenge.Infrastructure
             services.AddScoped<IRentalRepository, RentalRepository>();
             services.AddScoped<IFileStorageService, LocalStorageService>();
             services.AddScoped<IRentalPlanRepository, RentalPlanRepository>();
+            services.AddScoped<IMessageBusService, RabbitMqService>();
 
             return services;
         }

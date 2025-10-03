@@ -12,6 +12,8 @@ namespace MotorcycleRentalChallenge.Infrastructure.Data
         DbSet<Motorcycle> Motorcycles { get; set; }
         DbSet<DeliveryDriver> DeliveryDrivers { get; set; }
         DbSet<Rental> Rentals {  get; set; }
+        DbSet<RentalPlan> RentalPlans { get; set; }
+        DbSet<MotorcycleNotification> MotorcycleNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

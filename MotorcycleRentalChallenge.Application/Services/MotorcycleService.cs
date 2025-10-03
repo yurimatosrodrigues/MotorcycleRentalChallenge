@@ -1,17 +1,22 @@
 ﻿using MotorcycleRentalChallenge.Application.InputModel;
 using MotorcycleRentalChallenge.Application.Interfaces;
 using MotorcycleRentalChallenge.Application.ViewModel;
+using MotorcycleRentalChallenge.Core.Entities;
+using MotorcycleRentalChallenge.Core.Events;
 using MotorcycleRentalChallenge.Core.Exceptions;
 using MotorcycleRentalChallenge.Core.Interfaces.Repositories;
+using MotorcycleRentalChallenge.Infrastructure.Messaging;
 
 namespace MotorcycleRentalChallenge.Application.Services
 {
     public class MotorcycleService : IMotorcycleService
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
-        public MotorcycleService(IMotorcycleRepository motorcycleRepository)
+        private readonly IMessageBusService _rabbitMqService;
+        public MotorcycleService(IMotorcycleRepository motorcycleRepository, IMessageBusService rabbitMqService)
         {
             _motorcycleRepository = motorcycleRepository;
+            _rabbitMqService = rabbitMqService;
         }
 
         public async Task<Guid> AddAsync(AddMotorcycleInputModel model)
@@ -25,6 +30,10 @@ namespace MotorcycleRentalChallenge.Application.Services
             }
 
             var id = await _motorcycleRepository.AddAsync(motorcycle);
+
+            await _rabbitMqService.PublishAsync(
+                new MotorcycleRegisteredEvent(id, motorcycle.Identifier, motorcycle.Year, 
+                motorcycle.Model, motorcycle.Plate));
 
             return id;
         }
