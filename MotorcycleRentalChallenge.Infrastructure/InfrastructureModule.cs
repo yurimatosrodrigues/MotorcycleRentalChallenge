@@ -23,7 +23,9 @@ namespace MotorcycleRentalChallenge.Infrastructure
         {            
             services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-                    
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);            
+
             return services;
         }
 

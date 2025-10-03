@@ -39,7 +39,7 @@ namespace MotorcycleRentalChallenge.Application.Services
             }
 
             if(!motorcycle.CanBeDeleted()){
-                throw new DomainException("Motorcycle had rentals and cannot be deleted.");
+                throw new DomainException("Motorcycle has rentals and cannot be deleted.");
             }
 
             await _motorcycleRepository.RemoveAsync(motorcycle);

@@ -92,11 +92,6 @@ namespace MotorcycleRentalChallenge.Core.Entities
 
         private void ValidateDates()
         {
-            if (StartDate < DateTime.UtcNow.Date)
-            {
-                throw new DomainException("Start date must be in the future.");
-            }
-
             if (ExpectedEndDate <= StartDate)
             {
                 throw new DomainException("Expected end date must be after start date.");

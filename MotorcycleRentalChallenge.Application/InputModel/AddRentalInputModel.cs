@@ -12,7 +12,7 @@ namespace MotorcycleRentalChallenge.Application.InputModel
         [JsonPropertyName("moto_id")]
         public string MotorcycleId { get; set; }
 
-        [JsonPropertyName("data_inicio")]        
+        [JsonPropertyName("data_inicio")]
         public DateTime? StartDate { get; set; }
 
         [JsonPropertyName("data_termino")]
@@ -48,9 +48,9 @@ namespace MotorcycleRentalChallenge.Application.InputModel
                     guidDeliveryDriver,
                     rentalPlan.Id,
                     rentalPlan,
-                    StartDate.Value,
-                    EndDate.Value,
-                    ExpectedEndDate.Value
+                    StartDate.Value.ToUniversalTime(),
+                    EndDate.Value.ToUniversalTime(),
+                    ExpectedEndDate.Value.ToUniversalTime()
                 );
             }
 

@@ -34,7 +34,7 @@ namespace MotorcycleRentalChallenge.Application.InputModel
                 Identifier, 
                 Name, 
                 Cnpj, 
-                Birthdate, 
+                Birthdate.ToUniversalTime(), 
                 CnhNumber,
                 EnumParserExtension.ParseEnum<CnhType>(CnhType),
                 CnhImage

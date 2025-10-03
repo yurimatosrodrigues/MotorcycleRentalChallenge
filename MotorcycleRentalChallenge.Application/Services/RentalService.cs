@@ -91,7 +91,7 @@ namespace MotorcycleRentalChallenge.Application.Services
                 throw new NotFoundException("Rental doesn't exist.");
             }
 
-            decimal totalCost = rental.CompleteRent(model.ReturnDate);
+            decimal totalCost = rental.CompleteRent(model.ReturnDate.ToUniversalTime());
 
             await _rentalRepository.UpdateAsync(rental);
 
