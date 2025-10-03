@@ -10,9 +10,23 @@ services:
       - "8080:8080"      
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=db;Database=mydb;Username=postgres;Password=postgres
+      - ConnectionStrings__DefaultConnection=Host=db;Database=motorcycle_rental;Username=postgres;Password=postgres
     depends_on:
       - db
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-lib:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
 
   db:
     image: postgres:latest
@@ -28,3 +42,5 @@ services:
 
 volumes:
   postgres_data:
+  rabbitmq-lib:
+  rabbitmq-log:
