@@ -14,6 +14,19 @@ services:
     depends_on:
       - db
       - rabbitmq
+  
+  worker:
+    build:
+      context: .
+      dockerfile: MotorcycleRentalChallenge.Worker/Dockerfile
+    container_name: motorcycle_rental_worker
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ConnectionStrings__DefaultConnection=Host=db;Database=motorcycle_rental;Username=postgres;Password=postgres
+        - RabbitMqHost=rabbitmq
+    depends_on:
+      - db
+      - rabbitmq        
 
   rabbitmq:
     image: rabbitmq:management

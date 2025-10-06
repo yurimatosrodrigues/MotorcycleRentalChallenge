@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace MotorcycleRentalChallenge.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +15,8 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
                 name: "DeliveryDrivers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", maxLength: 100, nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Identifier = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Cnpj = table.Column<string>(type: "character varying(14)", maxLength: 14, nullable: false),
                     Birthdate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -32,10 +31,26 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MotorcycleNotifications",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    MotorcycleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Year = table.Column<int>(type: "integer", nullable: false),
+                    Plate = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MotorcycleNotifications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Motorcycles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Identifier = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Year = table.Column<int>(type: "integer", nullable: false),
                     Model = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     Plate = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
@@ -47,7 +62,7 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RentalPlan",
+                name: "RentalPlans",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -58,7 +73,7 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RentalPlan", x => x.Id);
+                    table.PrimaryKey("PK_RentalPlans", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,23 +107,11 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Rentals_RentalPlan_RentalPlanId",
+                        name: "FK_Rentals_RentalPlans_RentalPlanId",
                         column: x => x.RentalPlanId,
-                        principalTable: "RentalPlan",
+                        principalTable: "RentalPlans",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.InsertData(
-                table: "RentalPlan",
-                columns: new[] { "Id", "CreatedAt", "DailyRate", "Days", "PenaltyPercentageForUnusedDays" },
-                values: new object[,]
-                {
-                    { new Guid("1d761336-3a80-44e5-859b-9f7108aff485"), new DateTime(2025, 9, 26, 2, 54, 49, 586, DateTimeKind.Utc).AddTicks(708), 22m, 30, null },
-                    { new Guid("39ded9a8-4373-4a0a-97d7-37ddb2173bf1"), new DateTime(2025, 9, 26, 2, 54, 49, 586, DateTimeKind.Utc).AddTicks(710), 20m, 45, null },
-                    { new Guid("7ab0ba26-53b4-4d95-bab3-9cc4dc026f97"), new DateTime(2025, 9, 26, 2, 54, 49, 586, DateTimeKind.Utc).AddTicks(706), 28m, 15, 0.4m },
-                    { new Guid("d3b8c856-d4dd-4ea4-871b-054c8b2ac14c"), new DateTime(2025, 9, 26, 2, 54, 49, 586, DateTimeKind.Utc).AddTicks(694), 30m, 7, 0.2m },
-                    { new Guid("f321d945-5f63-4770-815e-894c43cc7abe"), new DateTime(2025, 9, 26, 2, 54, 49, 586, DateTimeKind.Utc).AddTicks(711), 18m, 50, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -149,6 +152,9 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "MotorcycleNotifications");
+
+            migrationBuilder.DropTable(
                 name: "Rentals");
 
             migrationBuilder.DropTable(
@@ -158,7 +164,7 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
                 name: "Motorcycles");
 
             migrationBuilder.DropTable(
-                name: "RentalPlan");
+                name: "RentalPlans");
         }
     }
 }

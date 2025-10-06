@@ -30,7 +30,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
     db.Database.Migrate();
+
+    var seeder = scope.ServiceProvider.GetRequiredService<DbSeed>();
+        
+    await seeder.Populate();    
 }
 
 // Configure the HTTP request pipeline.

@@ -8,7 +8,7 @@
             Identifier = identifier;
             Year = year;
             Model = model;
-            Plate = plate;            
+            Plate = plate;
         }
 
         public Guid Id { get; private set; }

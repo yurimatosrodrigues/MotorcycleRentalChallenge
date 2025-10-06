@@ -23,14 +23,6 @@ namespace MotorcycleRentalChallenge.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new DeliveryDriverConfiguration());
             modelBuilder.ApplyConfiguration(new RentalConfiguration());
             modelBuilder.ApplyConfiguration(new RentalPlanConfiguration());
-
-            modelBuilder.Entity<RentalPlan>().HasData(
-                new RentalPlan(7, 30m, 0.2m),
-                new RentalPlan(15, 28m, 0.4m),
-                new RentalPlan(30, 22m, null),
-                new RentalPlan(45, 20m, null),
-                new RentalPlan(50, 18m, null)
-            );
         }
     }
 }

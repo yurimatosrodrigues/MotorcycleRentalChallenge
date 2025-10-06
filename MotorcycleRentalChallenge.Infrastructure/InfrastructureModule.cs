@@ -25,8 +25,8 @@ namespace MotorcycleRentalChallenge.Infrastructure
             services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);            
-
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);
+                        
             return services;
         }
 
@@ -36,8 +36,9 @@ namespace MotorcycleRentalChallenge.Infrastructure
             services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
             services.AddScoped<IRentalRepository, RentalRepository>();
             services.AddScoped<IFileStorageService, LocalStorageService>();
-            services.AddScoped<IRentalPlanRepository, RentalPlanRepository>();
+            services.AddScoped<IRentalPlanRepository, RentalPlanRepository>();            
             services.AddScoped<IMessageBusService, RabbitMqService>();
+            services.AddScoped<DbSeed>();
 
             return services;
         }

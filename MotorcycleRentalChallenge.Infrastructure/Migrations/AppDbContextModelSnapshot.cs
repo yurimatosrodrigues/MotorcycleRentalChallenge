@@ -108,6 +108,30 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
                     b.ToTable("Motorcycles");
                 });
 
+            modelBuilder.Entity("MotorcycleRentalChallenge.Core.Entities.MotorcycleNotification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("MotorcycleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Plate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MotorcycleNotifications");
+                });
+
             modelBuilder.Entity("MotorcycleRentalChallenge.Core.Entities.Rental", b =>
                 {
                     b.Property<Guid>("Id")
@@ -174,46 +198,7 @@ namespace MotorcycleRentalChallenge.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RentalPlan");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("fc520cfd-ce80-4a0f-9a0d-da6cc2612fd5"),
-                            CreatedAt = new DateTime(2025, 9, 26, 20, 25, 11, 315, DateTimeKind.Utc).AddTicks(9694),
-                            DailyRate = 30m,
-                            Days = 7,
-                            PenaltyPercentageForUnusedDays = 0.2m
-                        },
-                        new
-                        {
-                            Id = new Guid("ec5d34e7-ed4e-427f-a28e-4c58c9c94193"),
-                            CreatedAt = new DateTime(2025, 9, 26, 20, 25, 11, 315, DateTimeKind.Utc).AddTicks(9698),
-                            DailyRate = 28m,
-                            Days = 15,
-                            PenaltyPercentageForUnusedDays = 0.4m
-                        },
-                        new
-                        {
-                            Id = new Guid("426a33dc-7b4c-4b55-a195-e9b82e8098d3"),
-                            CreatedAt = new DateTime(2025, 9, 26, 20, 25, 11, 315, DateTimeKind.Utc).AddTicks(9700),
-                            DailyRate = 22m,
-                            Days = 30
-                        },
-                        new
-                        {
-                            Id = new Guid("5b4b1cb5-8d2c-4b1b-9553-03b61cb0e44f"),
-                            CreatedAt = new DateTime(2025, 9, 26, 20, 25, 11, 315, DateTimeKind.Utc).AddTicks(9701),
-                            DailyRate = 20m,
-                            Days = 45
-                        },
-                        new
-                        {
-                            Id = new Guid("41e5d448-9f0d-4992-a6c9-5676d6871fc4"),
-                            CreatedAt = new DateTime(2025, 9, 26, 20, 25, 11, 315, DateTimeKind.Utc).AddTicks(9702),
-                            DailyRate = 18m,
-                            Days = 50
-                        });
+                    b.ToTable("RentalPlans");
                 });
 
             modelBuilder.Entity("MotorcycleRentalChallenge.Core.Entities.Rental", b =>

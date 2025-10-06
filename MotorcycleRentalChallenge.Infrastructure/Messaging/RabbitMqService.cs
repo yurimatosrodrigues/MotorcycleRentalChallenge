@@ -12,7 +12,7 @@ namespace MotorcycleRentalChallenge.Infrastructure.Messaging
 
         public RabbitMqService(IConfiguration configuration)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "rabbitmq" };
 
             _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
             _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
