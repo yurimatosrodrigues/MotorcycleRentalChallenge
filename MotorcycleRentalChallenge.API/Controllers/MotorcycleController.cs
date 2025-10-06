@@ -36,11 +36,11 @@ namespace MotorcycleRentalChallenge.API.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> Get([FromQuery] string? plate)
+        public async Task<IActionResult> Get([FromQuery] string? placa)
         {
             try
             {
-                var motorcycles = await _motorcycleService.GetByPlateAsync(plate);
+                var motorcycles = await _motorcycleService.GetByPlateAsync(placa);
 
                 return Ok(motorcycles);
             }
