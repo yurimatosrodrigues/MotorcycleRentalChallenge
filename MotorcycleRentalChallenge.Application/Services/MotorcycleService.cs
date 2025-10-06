@@ -1,7 +1,6 @@
 ﻿using MotorcycleRentalChallenge.Application.InputModel;
 using MotorcycleRentalChallenge.Application.Interfaces;
 using MotorcycleRentalChallenge.Application.ViewModel;
-using MotorcycleRentalChallenge.Core.Entities;
 using MotorcycleRentalChallenge.Core.Events;
 using MotorcycleRentalChallenge.Core.Exceptions;
 using MotorcycleRentalChallenge.Core.Interfaces.Repositories;
