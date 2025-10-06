@@ -6,6 +6,7 @@ namespace MotorcycleRentalChallenge.Application.Interfaces
     public interface IDeliveryDriverService
     {
         Task<Guid> AddAsync(AddDeliveryDriverInputModel model);
-        Task SendCnhImageAsync(Guid id, CnhImageInputModel model);        
+        Task SendCnhImageAsync(Guid id, CnhImageInputModel model);
+        Task<IEnumerable<DeliveryDriverViewModel>> GetAllAsync();
     }
 }

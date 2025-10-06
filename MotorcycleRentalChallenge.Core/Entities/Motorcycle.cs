@@ -81,7 +81,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
             return false;
         }
 
-        public bool CanBeRented()
+        public bool CanBeRented(DateTime startRentalDate)
         {
             var lastRental = Rentals.OrderByDescending(x => x.CreatedAt).FirstOrDefault();
             if (lastRental != null) 
@@ -90,7 +90,7 @@ namespace MotorcycleRentalChallenge.Core.Entities
                 {
                     return false;
                 }
-                if (lastRental.EndDate >= DateTime.UtcNow.Date)
+                if (lastRental.EndDate >= startRentalDate)
                 {
                     return false;
                 }

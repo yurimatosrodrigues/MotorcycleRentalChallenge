@@ -64,7 +64,7 @@ namespace MotorcycleRentalChallenge.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}/devolucao")]
         public async Task<IActionResult> Put([FromRoute] string id, UpdateRentalInputModel request)
         {
             try

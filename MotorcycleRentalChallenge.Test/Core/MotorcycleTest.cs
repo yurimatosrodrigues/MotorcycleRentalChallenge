@@ -90,7 +90,7 @@ namespace MotorcycleRentalChallenge.Test.Core
         {
             var motorcycle = new Motorcycle("Identifier123", 2025, "Model", "ABC1234");
 
-            Assert.IsTrue(motorcycle.CanBeRented());
+            Assert.IsTrue(motorcycle.CanBeRented(DateTime.UtcNow.AddDays(30)));
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace MotorcycleRentalChallenge.Test.Core
             
             rentalsList.Add(new Rental(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new RentalPlan(7, 30, 0.2m)));
 
-            Assert.IsFalse(motorcycle.CanBeRented());
+            Assert.IsFalse(motorcycle.CanBeRented(DateTime.UtcNow.Date));
         }
     }
 }

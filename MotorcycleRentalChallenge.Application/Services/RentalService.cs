@@ -57,7 +57,8 @@ namespace MotorcycleRentalChallenge.Application.Services
                 throw new NotFoundException($"There is no Motorcycle with this Id.");
             }
 
-            if (!motorcycle.CanBeRented())
+            DateTime startRentalDate = model.StartDate ?? DateTime.UtcNow.Date;
+            if (!motorcycle.CanBeRented(startRentalDate))
             {
                 throw new DomainException("Motorcycle is already rented.");
             }

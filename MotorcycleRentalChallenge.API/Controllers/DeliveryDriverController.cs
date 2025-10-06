@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MotorcycleRentalChallenge.Application.InputModel;
 using MotorcycleRentalChallenge.Application.Interfaces;
+using MotorcycleRentalChallenge.Application.Services;
 using MotorcycleRentalChallenge.Core.Exceptions;
 
 namespace MotorcycleRentalChallenge.API.Controllers
@@ -52,6 +53,25 @@ namespace MotorcycleRentalChallenge.API.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(new { mensagem = ex.Message });
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet()]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var drivers = await _deliveryDriverService.GetAllAsync();
+
+                return Ok(drivers);
             }
             catch (DomainException ex)
             {

@@ -1,5 +1,6 @@
 ﻿using MotorcycleRentalChallenge.Application.InputModel;
 using MotorcycleRentalChallenge.Application.Interfaces;
+using MotorcycleRentalChallenge.Application.ViewModel;
 using MotorcycleRentalChallenge.Core.Exceptions;
 using MotorcycleRentalChallenge.Core.Interfaces.Repositories;
 using MotorcycleRentalChallenge.Core.Interfaces.Storage;
@@ -60,6 +61,14 @@ namespace MotorcycleRentalChallenge.Application.Services
 
             await _fileStorageService.UploadFileBase64Async(base64Image, imageName);
             await _deliveryDriverRepository.UpdateAsync(driver);            
+        }
+
+        public async Task<IEnumerable<DeliveryDriverViewModel>> GetAllAsync()
+        {
+            var drivers = await _deliveryDriverRepository.GetAllAsync();
+
+            return drivers.Select(d => new DeliveryDriverViewModel(
+                d.Id, d.Identifier, d.Name, d.Cnpj, d.Birthdate, d.CnhNumber, d.CnhType.ToString()));
         }
     }
 }
