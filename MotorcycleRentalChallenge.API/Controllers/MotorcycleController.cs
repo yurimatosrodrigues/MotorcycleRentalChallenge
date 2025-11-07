@@ -2,6 +2,7 @@
 using MotorcycleRentalChallenge.Application.InputModel;
 using MotorcycleRentalChallenge.Application.Interfaces;
 using MotorcycleRentalChallenge.Core.Exceptions;
+using MotorcycleRentalChallenge.Infrastructure.Logging;
 
 namespace MotorcycleRentalChallenge.API.Controllers
 {
@@ -10,10 +11,13 @@ namespace MotorcycleRentalChallenge.API.Controllers
     public class MotorcycleController : ControllerBase
     {
         private readonly IMotorcycleService _motorcycleService;
+        private readonly ILogger<MotorcycleController> _logger;
 
-        public MotorcycleController(IMotorcycleService motorcycleService)
+        public MotorcycleController(IMotorcycleService motorcycleService, 
+            ILogger<MotorcycleController> logger)
         {
             _motorcycleService = motorcycleService;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -40,6 +44,8 @@ namespace MotorcycleRentalChallenge.API.Controllers
         {
             try
             {
+                _logger.LogInformation("Searching motorcycles.");
+
                 var motorcycles = await _motorcycleService.GetByPlateAsync(placa);
 
                 return Ok(motorcycles);

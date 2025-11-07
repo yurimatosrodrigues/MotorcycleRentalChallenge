@@ -5,8 +5,11 @@ using MotorcycleRentalChallenge.Core.Interfaces.Repositories;
 using MotorcycleRentalChallenge.Core.Interfaces.Storage;
 using MotorcycleRentalChallenge.Infrastructure.Data;
 using MotorcycleRentalChallenge.Infrastructure.Data.Repositories;
+using MotorcycleRentalChallenge.Infrastructure.Logging;
 using MotorcycleRentalChallenge.Infrastructure.Messaging;
 using MotorcycleRentalChallenge.Infrastructure.Storage;
+using Serilog;
+using Serilog.Events;
 
 namespace MotorcycleRentalChallenge.Infrastructure
 {
@@ -16,6 +19,7 @@ namespace MotorcycleRentalChallenge.Infrastructure
         {
             services.AddPostgreSQL(configuration);
             services.AddRepositories();
+            services.AddLogger(configuration);
 
             return services;
         }
@@ -39,6 +43,19 @@ namespace MotorcycleRentalChallenge.Infrastructure
             services.AddScoped<IRentalPlanRepository, RentalPlanRepository>();            
             services.AddScoped<IMessageBusService, RabbitMqService>();
             services.AddScoped<DbSeed>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddLogger(this IServiceCollection services, IConfiguration configuration)
+        {            
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration).MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            services.AddSingleton(typeof(IAppLogger<>), typeof(Logger<>));                       
 
             return services;
         }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MotorcycleRentalChallenge.Application;
 using MotorcycleRentalChallenge.Infrastructure;
 using MotorcycleRentalChallenge.Infrastructure.Data;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+
+builder.Host.UseSerilog();
+
 
 builder.Services.AddCors(options =>
 {
@@ -26,6 +30,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseSerilogRequestLogging();
 
 using (var scope = app.Services.CreateScope())
 {
