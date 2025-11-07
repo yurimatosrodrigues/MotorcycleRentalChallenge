@@ -37,6 +37,7 @@ Sistema de **aluguel de motos** desenvolvido em **.NET 8**, banco de dados Postg
 | ORM | **Entity Framework Core** |
 | Testes | **MsTest** |
 | Containerização | **Docker** |
+| Logs | **Serilog** |
 
 ---
 
